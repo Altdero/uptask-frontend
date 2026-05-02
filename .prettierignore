@@ -1,0 +1,23 @@
+# Dependency folders
+node_modules/
+
+# Next.js specific
+.next/
+next-env.d.ts
+
+# Editor/IDE
+.vscode/
+.husky/
+.idea/
+.prettierignore
+
+# Static assets
+public/
+*.png
+*.jpg
+
+# Environment and lock files
+.env*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
