@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UpTask
 
-## Getting Started
+A Jira-like project management application built with **Next.js 16**, **React 19**, and **TypeScript** — personal portfolio project for learning and practice.
 
-First, run the development server:
+## Features
+
+- User authentication — register, login, confirm account, forgot/reset password
+- Project CRUD — create, edit, and delete projects with client and description
+- Task management — create, edit, delete, and update task status per project
+- Drag-and-drop — reorder tasks across status columns
+- Notes — add and delete notes per task
+- Team management — invite and remove team members per project
+- Profile — edit name, email, and password
+
+## Task Statuses
+
+`Pending` → `On Hold` → `In Progress` → `Under Review` → `Completed`
+
+## Tech Stack
+
+| Layer         | Library                    | Version |
+| ------------- | -------------------------- | ------- |
+| Framework     | Next.js (App Router)       | 16.x    |
+| UI            | React                      | 19.x    |
+| Language      | TypeScript (strict)        | 5.x     |
+| Styling       | Tailwind CSS               | 4.x     |
+| State         | MobX + mobx-react-lite     | 6.x     |
+| Data fetching | SWR + Fetch API            | 2.x     |
+| Forms         | react-hook-form + Zod      | latest  |
+| UI Components | Headless UI + Heroicons    | latest  |
+| PIN input     | input-otp                  | latest  |
+| Drag & drop   | @dnd-kit                   | latest  |
+| Toast         | Sonner                     | latest  |
+| Linting       | ESLint (flat config)       | 9.x     |
+| Formatting    | Prettier + Tailwind plugin | —       |
+| Git hooks     | Husky + lint-staged        | —       |
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- yarn
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy `.env.example` to `.env.local` and fill in the values:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cp .env.example .env.local
+```
 
-## Learn More
+| Variable  | Description     | Example                     |
+| --------- | --------------- | --------------------------- |
+| `API_URL` | Backend API URL | `http://localhost:4000/api` |
 
-To learn more about Next.js, take a look at the following resources:
+### Run
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+yarn dev       # http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+app/
+├── layout.tsx                    # Root layout — providers + Toaster
+├── globals.css
+├── not-found.tsx
+├── (app)/                        # Protected routes
+│   ├── layout.tsx                # App shell — Navbar
+│   ├── page.tsx                  # Dashboard
+│   ├── projects/
+│   │   ├── create/page.tsx
+│   │   └── [projectId]/
+│   │       ├── page.tsx          # Project details
+│   │       ├── edit/page.tsx
+│   │       └── team/page.tsx
+│   └── profile/
+│       ├── page.tsx
+│       └── password/page.tsx
+└── auth/
+    ├── layout.tsx
+    ├── login/page.tsx
+    ├── register/page.tsx
+    ├── confirm-account/page.tsx
+    ├── request-code/page.tsx
+    ├── forgot-password/page.tsx
+    └── reset-password/page.tsx
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+components/
+├── ui/                           # Shared UI components
+├── auth/
+├── projects/
+├── tasks/
+├── notes/
+├── team/
+└── profile/
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+src/
+├── api/                          # Fetch-based API functions per domain
+├── constants/                    # App-wide constants
+├── hooks/                        # Custom React hooks
+├── lib/
+│   ├── schemas/                  # Zod schemas
+│   └── utils/                    # Fetch utilities and helpers
+├── providers/                    # React context providers
+├── stores/                       # MobX stores
+└── types/                        # Inferred TypeScript types
+```
+
+## Development Commands
+
+```bash
+yarn dev          # Start dev server (http://localhost:3000)
+yarn build        # Build for production
+yarn start        # Run production server
+yarn lint         # Run ESLint
+yarn format       # Prettier + Tailwind class sorting
+yarn typecheck    # Type-check without building
+yarn validate     # lint + typecheck + build
+yarn prepare      # Set up Husky git hooks
+```
+
+## License
+
+This project is part of a personal portfolio.
