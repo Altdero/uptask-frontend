@@ -1,11 +1,22 @@
+import NavMenu from "@/components/ui/NavMenu";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <header className="border-b border-zinc-200 bg-white px-8 py-4">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between">
-        <Image src="./logo.svg" alt="UpTask" />
-      </nav>
+    <header className="w-full bg-gray-800 py-5">
+      <div className="flex items-center justify-between pr-4">
+        <Link href="/" target="_self">
+          <Image
+            src="/logo.svg"
+            width={250}
+            height={88}
+            alt="UpTask"
+            loading="eager"
+          />
+        </Link>
+        <NavMenu />
+      </div>
     </header>
   );
 }
