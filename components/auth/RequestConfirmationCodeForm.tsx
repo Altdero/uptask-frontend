@@ -2,22 +2,22 @@
 
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { requestConfirmationCodeSchema } from "@/src/lib/schemas/authSchema";
-import type { RequestConfirmationCodeForm } from "@/src/types";
+import type { RequestConfirmationCodeType } from "@/src/types";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-export default function RequestCodeForm() {
+export default function RequestConfirmationCodeForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RequestConfirmationCodeForm>({
+  } = useForm<RequestConfirmationCodeType>({
     resolver: zodResolver(requestConfirmationCodeSchema),
   });
 
-  const handleRequestCode = (formData: RequestConfirmationCodeForm) => {
+  const handleRequestCode = (formData: RequestConfirmationCodeType) => {
     console.log(formData);
   };
 

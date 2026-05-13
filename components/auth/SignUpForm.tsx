@@ -2,7 +2,7 @@
 
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { userRegistrationSchema } from "@/src/lib/schemas/authSchema";
-import type { UserRegistrationForm } from "@/src/types";
+import type { UserRegistrationType } from "@/src/types";
 import {
   EnvelopeIcon,
   EyeIcon,
@@ -23,11 +23,11 @@ export default function SignUpForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserRegistrationForm>({
+  } = useForm<UserRegistrationType>({
     resolver: zodResolver(userRegistrationSchema),
   });
 
-  const handleSignUp = (formData: UserRegistrationForm) => {
+  const handleSignUp = (formData: UserRegistrationType) => {
     console.log(formData);
   };
 

@@ -1,12 +1,17 @@
 import { apiFetch } from "@/src/lib/utils/apiFetch";
 import { taskSchema } from "@/src/lib/schemas/taskSchema";
-import type { Project, Task, TaskFormData, TaskStatus } from "@/src/types";
+import type {
+  ProjectType,
+  TaskType,
+  TaskFormDataType,
+  TaskStatusType,
+} from "@/src/types";
 
 type TaskAPIArgs = {
-  projectId: Project["_id"];
-  taskId: Task["_id"];
-  formData: TaskFormData;
-  status: TaskStatus;
+  projectId: ProjectType["_id"];
+  taskId: TaskType["_id"];
+  formData: TaskFormDataType;
+  status: TaskStatusType;
 };
 
 export async function createTask({

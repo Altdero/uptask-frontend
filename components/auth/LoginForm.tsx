@@ -2,7 +2,7 @@
 
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { userLoginSchema } from "@/src/lib/schemas/authSchema";
-import type { UserLoginForm } from "@/src/types";
+import type { UserLoginType } from "@/src/types";
 import {
   EnvelopeIcon,
   EyeIcon,
@@ -20,9 +20,9 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UserLoginForm>({ resolver: zodResolver(userLoginSchema) });
+  } = useForm<UserLoginType>({ resolver: zodResolver(userLoginSchema) });
 
-  const handleLogin = (formData: UserLoginForm) => {
+  const handleLogin = (formData: UserLoginType) => {
     console.log(formData);
   };
 

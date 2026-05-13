@@ -1,11 +1,11 @@
-import RequestCodeForm from "@/components/auth/RequestCodeForm";
+import RequestConfirmationCodeForm from "@/components/auth/RequestConfirmationCodeForm";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Confirmation Code | UpTask",
 };
 
-export default function RequestCodePage() {
+export default function RequestConfirmationCodePage() {
   return (
     <>
       <h1 className="text-4xl font-black text-white">
@@ -19,7 +19,7 @@ export default function RequestCodePage() {
         </span>
       </p>
 
-      <RequestCodeForm />
+      <RequestConfirmationCodeForm />
     </>
   );
 }

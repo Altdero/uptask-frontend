@@ -1,14 +1,14 @@
 import { makeAutoObservable } from "mobx";
-import type { User } from "@/src/types";
+import type { UserType } from "@/src/types";
 
 export class AuthStore {
-  user: User | null = null;
+  user: UserType | null = null;
 
   constructor() {
     makeAutoObservable(this, {}, { name: "AuthStore", autoBind: true });
   }
 
-  setUser(user: User | null) {
+  setUser(user: UserType | null) {
     this.user = user;
   }
 

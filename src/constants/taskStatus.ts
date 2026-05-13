@@ -1,6 +1,6 @@
-import type { TaskStatus } from "@/src/types";
+import type { TaskStatusType } from "@/src/types";
 
-export const TASK_STATUSES: Record<TaskStatus, string> = {
+export const TASK_STATUSES: Record<TaskStatusType, string> = {
   pending: "Pending",
   onHold: "On Hold",
   inProgress: "In Progress",

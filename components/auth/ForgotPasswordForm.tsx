@@ -2,22 +2,22 @@
 
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { forgotPasswordSchema } from "@/src/lib/schemas/authSchema";
-import type { ForgotPasswordForm } from "@/src/types";
+import type { ForgotPasswordType } from "@/src/types";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-export default function ForgotPasswordForm() {
+export default function ForgotPasswordType() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ForgotPasswordForm>({
+  } = useForm<ForgotPasswordType>({
     resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const handleForgotPassword = (formData: ForgotPasswordForm) => {
+  const handleForgotPassword = (formData: ForgotPasswordType) => {
     console.log(formData);
   };
 

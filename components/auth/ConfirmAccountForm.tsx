@@ -1,8 +1,8 @@
 "use client";
 
 import ErrorMessage from "@/components/ui/ErrorMessage";
-import { confirmTokenSchema } from "@/src/lib/schemas/authSchema";
-import type { ConfirmToken } from "@/src/types";
+import { confirmAccountSchema } from "@/src/lib/schemas/authSchema";
+import type { ConfirmAccountType } from "@/src/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OTPInput, REGEXP_ONLY_DIGITS } from "input-otp";
 import Link from "next/link";
@@ -13,12 +13,12 @@ export default function ConfirmAccountForm() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<ConfirmToken>({
-    resolver: zodResolver(confirmTokenSchema),
+  } = useForm<ConfirmAccountType>({
+    resolver: zodResolver(confirmAccountSchema),
     defaultValues: { token: "" },
   });
 
-  const handleConfirmAccount = (formData: ConfirmToken) => {
+  const handleConfirmAccount = (formData: ConfirmAccountType) => {
     console.log(formData);
   };
 

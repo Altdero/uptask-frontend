@@ -1,70 +1,72 @@
-import type { z } from "zod";
 import type {
   authSchema,
-  userSchema,
-  userLoginSchema,
-  userRegistrationSchema,
-  requestConfirmationCodeSchema,
+  checkPasswordSchema,
+  confirmAccountSchema,
   forgotPasswordSchema,
   newPasswordSchema,
+  requestConfirmationCodeSchema,
   updateCurrentUserPasswordSchema,
-  confirmTokenSchema,
-  checkPasswordSchema,
+  userLoginSchema,
   userProfileSchema,
+  userRegistrationSchema,
+  userSchema,
 } from "@/src/lib/schemas/authSchema";
 import type { noteSchema } from "@/src/lib/schemas/noteSchema";
 import type {
-  taskSchema,
-  taskStatusSchema,
-  taskProjectSchema,
-} from "@/src/lib/schemas/taskSchema";
-import type {
-  projectSchema,
   dashboardProjectSchema,
   editProjectSchema,
+  projectSchema,
 } from "@/src/lib/schemas/projectSchema";
+import type {
+  taskProjectSchema,
+  taskSchema,
+  taskStatusSchema,
+} from "@/src/lib/schemas/taskSchema";
 import type {
   teamMemberSchema,
   teamMembersSchema,
 } from "@/src/lib/schemas/teamSchema";
+import type { z } from "zod";
 
 /** Auth */
-export type Auth = z.infer<typeof authSchema>;
-export type User = z.infer<typeof userSchema>;
-export type UserLoginForm = z.infer<typeof userLoginSchema>;
-export type UserRegistrationForm = z.infer<typeof userRegistrationSchema>;
-export type RequestConfirmationCodeForm = z.infer<
+export type AuthType = z.infer<typeof authSchema>;
+export type UserType = z.infer<typeof userSchema>;
+export type UserLoginType = z.infer<typeof userLoginSchema>;
+export type UserRegistrationType = z.infer<typeof userRegistrationSchema>;
+export type RequestConfirmationCodeType = z.infer<
   typeof requestConfirmationCodeSchema
 >;
-export type ForgotPasswordForm = z.infer<typeof forgotPasswordSchema>;
-export type NewPasswordForm = z.infer<typeof newPasswordSchema>;
-export type UpdateCurrentUserPasswordForm = z.infer<
+export type ForgotPasswordType = z.infer<typeof forgotPasswordSchema>;
+export type NewPasswordType = z.infer<typeof newPasswordSchema>;
+export type UpdateCurrentUserPasswordType = z.infer<
   typeof updateCurrentUserPasswordSchema
 >;
-export type ConfirmToken = z.infer<typeof confirmTokenSchema>;
-export type CheckPasswordForm = z.infer<typeof checkPasswordSchema>;
-export type UserProfileForm = z.infer<typeof userProfileSchema>;
+export type ConfirmAccountType = z.infer<typeof confirmAccountSchema>;
+export type CheckPasswordType = z.infer<typeof checkPasswordSchema>;
+export type UserProfileType = z.infer<typeof userProfileSchema>;
 
 /** Tasks */
-export type TaskStatus = z.infer<typeof taskStatusSchema>;
-export type Task = z.infer<typeof taskSchema>;
-export type TaskFormData = Pick<Task, "name" | "description">;
-export type TaskProject = z.infer<typeof taskProjectSchema>;
+export type TaskStatusType = z.infer<typeof taskStatusSchema>;
+export type TaskType = z.infer<typeof taskSchema>;
+export type TaskFormDataType = Pick<TaskType, "name" | "description">;
+export type TaskProjectType = z.infer<typeof taskProjectSchema>;
 
 /** Notes */
-export type Note = z.infer<typeof noteSchema>;
-export type NoteFormData = Pick<Note, "content">;
+export type NoteType = z.infer<typeof noteSchema>;
+export type NoteFormDataType = Pick<NoteType, "content">;
 
 /** Projects */
-export type Project = z.infer<typeof projectSchema>;
-export type ProjectFormData = Pick<
-  Project,
+export type ProjectType = z.infer<typeof projectSchema>;
+export type ProjectFormDataType = Pick<
+  ProjectType,
   "clientName" | "projectName" | "description"
 >;
-export type DashboardProject = z.infer<typeof dashboardProjectSchema>[number];
-export type EditProject = z.infer<typeof editProjectSchema>;
+export type DashboardProjectType = z.infer<
+  typeof dashboardProjectSchema
+>[number];
+export type EditProjectType = z.infer<typeof editProjectSchema>;
 
 /** Team */
-export type TeamMember = z.infer<typeof teamMemberSchema>;
-export type TeamMembers = z.infer<typeof teamMembersSchema>;
-export type TeamMemberForm = Pick<TeamMember, "email">;
+export type TeamMemberType = z.infer<typeof teamMemberSchema>;
+export type TeamMembersType = z.infer<typeof teamMembersSchema>;
+export type TeamMemberFormType = Pick<TeamMemberType, "email">;

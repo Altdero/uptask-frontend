@@ -1,11 +1,16 @@
 import { apiFetch } from "@/src/lib/utils/apiFetch";
-import type { Note, NoteFormData, Project, Task } from "@/src/types";
+import type {
+  NoteType,
+  NoteFormDataType,
+  ProjectType,
+  TaskType,
+} from "@/src/types";
 
 type NoteAPIArgs = {
-  projectId: Project["_id"];
-  taskId: Task["_id"];
-  noteId: Note["_id"];
-  formData: NoteFormData;
+  projectId: ProjectType["_id"];
+  taskId: TaskType["_id"];
+  noteId: NoteType["_id"];
+  formData: NoteFormDataType;
 };
 
 export async function createNote({

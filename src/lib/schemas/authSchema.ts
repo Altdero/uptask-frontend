@@ -50,7 +50,7 @@ export const updateCurrentUserPasswordSchema = authSchema
     path: ["password_confirmation"],
   });
 
-export const confirmTokenSchema = z.object({
+export const confirmAccountSchema = z.object({
   token: z.string().length(6, "Token must be 6 digits long"),
 });
 
