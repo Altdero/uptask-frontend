@@ -1,12 +1,16 @@
 "use client";
 
 import ErrorMessage from "@/components/ui/ErrorMessage";
+import { requestConfirmationCode } from "@/src/api/AuthAPI";
 import { requestConfirmationCodeSchema } from "@/src/lib/schemas/authSchema";
 import type { RequestConfirmationCodeType } from "@/src/types";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function RequestConfirmationCodeForm() {
   const {
@@ -17,8 +21,27 @@ export default function RequestConfirmationCodeForm() {
     resolver: zodResolver(requestConfirmationCodeSchema),
   });
 
-  const handleRequestCode = (formData: RequestConfirmationCodeType) => {
-    console.log(formData);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
+  const handleRequestCode = async (formData: RequestConfirmationCodeType) => {
+    setIsLoading(true);
+    const loader = toast.loading("Please wait...", {
+      toasterId: "loader",
+    });
+    try {
+      const message = await requestConfirmationCode(formData);
+      toast.success(message, { toasterId: "notifications" });
+      router.push("/auth/confirm-account");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+        { toasterId: "notifications" }
+      );
+    } finally {
+      setIsLoading(false);
+      toast.dismiss(loader);
+    }
   };
 
   return (
@@ -49,6 +72,7 @@ export default function RequestConfirmationCodeForm() {
 
         <button
           type="submit"
+          disabled={isLoading}
           className="mt-4 w-full cursor-pointer rounded-xl bg-fuchsia-500 p-3 text-xl font-black text-white uppercase transition hover:bg-fuchsia-600 disabled:opacity-50"
         >
           Send Code

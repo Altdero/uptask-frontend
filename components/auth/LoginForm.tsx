@@ -1,6 +1,7 @@
 "use client";
 
 import ErrorMessage from "@/components/ui/ErrorMessage";
+import { authenticateUser } from "@/src/api/AuthAPI";
 import { userLoginSchema } from "@/src/lib/schemas/authSchema";
 import type { UserLoginType } from "@/src/types";
 import {
@@ -10,20 +11,39 @@ import {
 } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function LoginForm() {
-  const [showPassword, setShowPassword] = useState(false);
-
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<UserLoginType>({ resolver: zodResolver(userLoginSchema) });
 
-  const handleLogin = (formData: UserLoginType) => {
-    console.log(formData);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = async (formData: UserLoginType) => {
+    setIsLoading(true);
+    const loader = toast.loading("Please wait...", {
+      toasterId: "loader",
+    });
+    try {
+      await authenticateUser(formData);
+      router.push("/");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+        { toasterId: "notifications" }
+      );
+    } finally {
+      setIsLoading(false);
+      toast.dismiss(loader);
+    }
   };
 
   return (
@@ -46,7 +66,7 @@ export default function LoginForm() {
               {...register("email")}
             />
             <span className="absolute top-4 right-4">
-              <EnvelopeIcon className="h-5 w-5 text-zinc-500" />
+              <EnvelopeIcon className="size-5 text-zinc-500" />
             </span>
           </div>
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
@@ -69,9 +89,9 @@ export default function LoginForm() {
               className="absolute top-4 right-4 cursor-pointer"
             >
               {showPassword ? (
-                <EyeIcon className="h-5 w-5 text-zinc-500" />
+                <EyeIcon className="size-5 text-zinc-500" />
               ) : (
-                <EyeSlashIcon className="h-5 w-5 text-zinc-500" />
+                <EyeSlashIcon className="size-5 text-zinc-500" />
               )}
             </span>
           </div>
@@ -91,6 +111,7 @@ export default function LoginForm() {
         {/* Submit button */}
         <button
           type="submit"
+          disabled={isLoading}
           className="mt-4 w-full cursor-pointer rounded-xl bg-fuchsia-500 p-3 text-xl font-black text-white uppercase transition hover:bg-fuchsia-600 disabled:opacity-50"
         >
           Sign In
