@@ -25,7 +25,8 @@ export default function RootLayout({
         <SWRProvider>
           <AuthProvider>
             {children}
-            <Toaster richColors position="top-right" />
+            <Toaster id="notifications" richColors position="top-right" />
+            <Toaster id="loader" richColors position="top-right" />
           </AuthProvider>
         </SWRProvider>
       </body>
