@@ -23,5 +23,10 @@ export async function apiFetch<T>(
   }
 
   const text = await res.text();
-  return (text ? JSON.parse(text) : null) as T;
+  if (!text) return null as T;
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    return text as T;
+  }
 }
