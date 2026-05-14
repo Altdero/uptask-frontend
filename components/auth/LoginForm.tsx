@@ -11,13 +11,15 @@ import {
 } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
   const {
     register,
     handleSubmit,
@@ -34,7 +36,7 @@ export default function LoginForm() {
     });
     try {
       await authenticateUser(formData);
-      router.push("/");
+      router.push(redirect ?? "/");
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Something went wrong",
