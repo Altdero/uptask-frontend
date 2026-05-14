@@ -1,4 +1,11 @@
-export const fetcher = async <T>(url: string): Promise<T> => {
+import validateAPIData from "@/src/lib/utils/validateAPIData";
+import { z } from "zod";
+
+export const fetcher = async <T>(
+  args: string | [string, z.ZodType<T>]
+): Promise<T> => {
+  const url = Array.isArray(args) ? args[0] : args;
+  const schema = Array.isArray(args) ? args[1] : null;
   const token =
     typeof window !== "undefined" ? localStorage.getItem("AUTH_TOKEN") : null;
 
@@ -14,5 +21,7 @@ export const fetcher = async <T>(url: string): Promise<T> => {
     throw new Error(body.error ?? "Request failed");
   }
 
-  return (await res.json()) as Promise<T>;
+  const json = await res.json();
+  if (schema) return validateAPIData(json, schema);
+  return json;
 };
