@@ -1,3 +1,4 @@
+import { UnauthorizedError } from "@/src/lib/utils/errors";
 import validateAPIData from "@/src/lib/utils/validateAPIData";
 import { z } from "zod";
 
@@ -17,6 +18,10 @@ export const fetcher = async <T>(
   });
 
   if (!res.ok) {
+    if (res.status === 401) {
+      localStorage.removeItem("AUTH_TOKEN");
+      throw new UnauthorizedError();
+    }
     const body = await res.json().catch(() => ({ error: "Request failed" }));
     throw new Error(body.error ?? "Request failed");
   }
