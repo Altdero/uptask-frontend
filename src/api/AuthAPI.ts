@@ -1,4 +1,3 @@
-import { userSchema } from "@/src/lib/schemas/authSchema";
 import { apiFetch } from "@/src/lib/utils/apiFetch";
 import type {
   CheckPasswordType,
@@ -8,7 +7,6 @@ import type {
   RequestConfirmationCodeType,
   UserLoginType,
   UserRegistrationType,
-  UserType,
 } from "@/src/types";
 
 export async function createAccount(formData: UserRegistrationType) {
@@ -47,12 +45,6 @@ export async function updatePasswordWithToken({
   token: ConfirmAccountType["token"];
 }) {
   return apiFetch<string>(`/auth/update-password/${token}`, "POST", formData);
-}
-
-export async function getUser(): Promise<UserType | undefined> {
-  const data = await apiFetch<unknown>("/auth/user");
-  const result = userSchema.safeParse(data);
-  return result.success ? result.data : undefined;
 }
 
 export async function checkPassword(formData: CheckPasswordType) {

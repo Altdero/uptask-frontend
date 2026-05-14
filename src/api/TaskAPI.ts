@@ -1,5 +1,4 @@
 import { apiFetch } from "@/src/lib/utils/apiFetch";
-import { taskSchema } from "@/src/lib/schemas/taskSchema";
 import type {
   ProjectType,
   TaskType,
@@ -19,17 +18,6 @@ export async function createTask({
   projectId,
 }: Pick<TaskAPIArgs, "formData" | "projectId">) {
   return apiFetch<string>(`/projects/${projectId}/tasks`, "POST", formData);
-}
-
-export async function getTaskById({
-  projectId,
-  taskId,
-}: Pick<TaskAPIArgs, "projectId" | "taskId">) {
-  const data = await apiFetch<unknown>(
-    `/projects/${projectId}/tasks/${taskId}`
-  );
-  const result = taskSchema.safeParse(data);
-  return result.success ? result.data : undefined;
 }
 
 export async function updateTask({

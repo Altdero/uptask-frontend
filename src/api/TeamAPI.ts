@@ -1,5 +1,4 @@
 import { apiFetch } from "@/src/lib/utils/apiFetch";
-import { teamMembersSchema } from "@/src/lib/schemas/teamSchema";
 import type {
   ProjectType,
   TeamMemberType,
@@ -38,10 +37,4 @@ export async function removeUserFromProject({
   userId: TeamMemberType["_id"];
 }) {
   return apiFetch<string>(`/projects/${projectId}/team/${userId}`, "DELETE");
-}
-
-export async function getProjectTeam(projectId: ProjectType["_id"]) {
-  const data = await apiFetch<unknown>(`/projects/${projectId}/team`);
-  const result = teamMembersSchema.safeParse(data);
-  return result.success ? result.data : undefined;
 }
