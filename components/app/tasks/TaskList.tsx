@@ -3,16 +3,16 @@
 import TaskColumn from "@/components/app/tasks/TaskColumn";
 import { updateStatus } from "@/src/api/TaskAPI";
 import { TASK_STATUSES } from "@/src/constants/taskStatus";
-import { projectSchema } from "@/src/lib/schemas/projectSchema";
 import type { ProjectType, TaskProjectType, TaskStatusType } from "@/src/types";
 import { DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { toast } from "sonner";
-import { useSWRConfig } from "swr";
+import type { KeyedMutator } from "swr";
 
 type TaskListProps = {
   tasks: TaskProjectType[];
   canEdit: boolean;
   projectId: string;
+  projectMutate: KeyedMutator<ProjectType>;
 };
 
 type GroupedTasks = Record<TaskStatusType, TaskProjectType[]>;
@@ -25,9 +25,12 @@ const emptyGroups: GroupedTasks = {
   completed: [],
 };
 
-export default function TaskList({ tasks, canEdit, projectId }: TaskListProps) {
-  const { mutate } = useSWRConfig();
-
+export default function TaskList({
+  tasks,
+  canEdit,
+  projectId,
+  projectMutate,
+}: TaskListProps) {
   const groupedTasks = tasks.reduce<GroupedTasks>(
     (acc, task) => ({ ...acc, [task.status]: [...acc[task.status], task] }),
     { ...emptyGroups }
@@ -43,8 +46,7 @@ export default function TaskList({ tasks, canEdit, projectId }: TaskListProps) {
     const draggedTask = tasks.find((task) => task._id === taskId);
     if (!draggedTask || draggedTask.status === status) return;
 
-    await mutate(
-      [`/projects/${projectId}`, projectSchema],
+    await projectMutate(
       (current: ProjectType | undefined) => {
         if (!current) return current;
         return {
@@ -66,7 +68,7 @@ export default function TaskList({ tasks, canEdit, projectId }: TaskListProps) {
         { toasterId: "notifications" }
       );
     } finally {
-      await mutate([`/projects/${projectId}`, projectSchema]);
+      await projectMutate();
     }
   };
 
@@ -88,6 +90,7 @@ export default function TaskList({ tasks, canEdit, projectId }: TaskListProps) {
               canEdit={canEdit}
               projectId={projectId}
               isLast={index === Object.keys(TASK_STATUSES).length - 1}
+              projectMutate={projectMutate}
             />
           ))}
         </DndContext>

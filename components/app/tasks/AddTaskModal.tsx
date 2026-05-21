@@ -2,27 +2,29 @@
 
 import TaskForm from "@/components/app/tasks/TaskForm";
 import { createTask } from "@/src/api/TaskAPI";
-import { projectSchema } from "@/src/lib/schemas/projectSchema";
 import { taskFormSchema } from "@/src/lib/schemas/taskSchema";
-import type { TaskFormDataType } from "@/src/types";
+import type { ProjectType, TaskFormDataType } from "@/src/types";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useSWRConfig } from "swr";
+import type { KeyedMutator } from "swr";
 
 type AddTaskModalProps = {
   projectId: string;
+  projectMutate: KeyedMutator<ProjectType>;
 };
 
-export default function AddTaskModal({ projectId }: AddTaskModalProps) {
+export default function AddTaskModal({
+  projectId,
+  projectMutate,
+}: AddTaskModalProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const show = searchParams.get("newTask") === "true";
-  const { mutate } = useSWRConfig();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -44,7 +46,7 @@ export default function AddTaskModal({ projectId }: AddTaskModalProps) {
       const message = await createTask({ formData, projectId });
       toast.dismiss(loader);
       toast.success(message, { toasterId: "notifications" });
-      await mutate([`/projects/${projectId}`, projectSchema]);
+      await projectMutate();
       reset();
       handleClose();
     } catch (error) {

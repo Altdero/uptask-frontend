@@ -5,27 +5,29 @@ import Loader from "@/components/ui/icons/Loader";
 import { updateStatus } from "@/src/api/TaskAPI";
 import { TASK_STATUSES } from "@/src/constants/taskStatus";
 import useGetData from "@/src/hooks/useGetData";
-import { projectSchema } from "@/src/lib/schemas/projectSchema";
 import { taskSchema } from "@/src/lib/schemas/taskSchema";
 import { formatDate } from "@/src/lib/utils/formatDate";
-import type { TaskStatusType } from "@/src/types";
+import type { ProjectType, TaskStatusType } from "@/src/types";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import type { ChangeEvent } from "react";
-import { useSWRConfig } from "swr";
+import type { KeyedMutator } from "swr";
 
 type TaskModalDetailsProps = {
   projectId: string;
+  projectMutate: KeyedMutator<ProjectType>;
 };
 
-export default function TaskDetailsModal({ projectId }: TaskModalDetailsProps) {
+export default function TaskDetailsModal({
+  projectId,
+  projectMutate,
+}: TaskModalDetailsProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const taskId = searchParams.get("viewTask");
   const show = !!taskId;
-  const { mutate } = useSWRConfig();
 
   const { data, mutate: taskMutate } = useGetData({
     url: taskId ? `/projects/${projectId}/tasks/${taskId}` : null,
@@ -46,7 +48,7 @@ export default function TaskDetailsModal({ projectId }: TaskModalDetailsProps) {
       toast.dismiss(loader);
       toast.success(message, { toasterId: "notifications" });
       await taskMutate();
-      await mutate([`/projects/${projectId}`, projectSchema]);
+      await projectMutate();
     } catch (error) {
       toast.dismiss(loader);
       toast.error(

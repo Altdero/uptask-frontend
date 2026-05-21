@@ -1,20 +1,20 @@
 "use client";
 
 import { deleteTask } from "@/src/api/TaskAPI";
-import { projectSchema } from "@/src/lib/schemas/projectSchema";
-import type { TaskProjectType } from "@/src/types";
-import { useDraggable } from "@dnd-kit/core";
+import type { ProjectType, TaskProjectType } from "@/src/types";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { useDraggable } from "@dnd-kit/core";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useSWRConfig } from "swr";
+import type { KeyedMutator } from "swr";
 
 type TaskCardProps = {
   task: TaskProjectType;
   canEdit: boolean;
   projectId: string;
   isLast: boolean;
+  projectMutate: KeyedMutator<ProjectType>;
 };
 
 export default function TaskCard({
@@ -22,10 +22,10 @@ export default function TaskCard({
   canEdit,
   projectId,
   isLast,
+  projectMutate,
 }: TaskCardProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const { mutate } = useSWRConfig();
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: task._id,
@@ -40,7 +40,7 @@ export default function TaskCard({
     try {
       const message = await deleteTask({ projectId, taskId: task._id });
       toast.success(message, { toasterId: "notifications" });
-      await mutate([`/projects/${projectId}`, projectSchema]);
+      await projectMutate();
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Something went wrong",

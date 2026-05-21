@@ -20,7 +20,11 @@ export default function ProjectDetails({ projectId }: ProjectDetailsProps) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { data, isLoading: loadingProject } = useGetData({
+  const {
+    data,
+    isLoading: loadingProject,
+    mutate: projectMutate,
+  } = useGetData({
     url: `/projects/${projectId}`,
     schema: projectSchema,
   });
@@ -72,11 +76,16 @@ export default function ProjectDetails({ projectId }: ProjectDetailsProps) {
         </nav>
       )}
 
-      <TaskList tasks={data.tasks} canEdit={canEdit} projectId={projectId} />
+      <TaskList
+        tasks={data.tasks}
+        canEdit={canEdit}
+        projectId={projectId}
+        projectMutate={projectMutate}
+      />
 
-      <AddTaskModal projectId={projectId} />
-      <EditTaskData projectId={projectId} />
-      <TaskDetailsModal projectId={projectId} />
+      <AddTaskModal projectId={projectId} projectMutate={projectMutate} />
+      <EditTaskData projectId={projectId} projectMutate={projectMutate} />
+      <TaskDetailsModal projectId={projectId} projectMutate={projectMutate} />
     </>
   );
 }

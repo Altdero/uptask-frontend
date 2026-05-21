@@ -2,8 +2,9 @@
 
 import TaskCard from "@/components/app/tasks/TaskCard";
 import { TASK_STATUSES } from "@/src/constants/taskStatus";
-import type { TaskProjectType, TaskStatusType } from "@/src/types";
+import type { ProjectType, TaskProjectType, TaskStatusType } from "@/src/types";
 import { useDroppable } from "@dnd-kit/core";
+import type { KeyedMutator } from "swr";
 
 type TaskColumnProps = {
   status: TaskStatusType;
@@ -11,6 +12,7 @@ type TaskColumnProps = {
   canEdit: boolean;
   projectId: string;
   isLast: boolean;
+  projectMutate: KeyedMutator<ProjectType>;
 };
 
 const statusStyles: Record<TaskStatusType, string> = {
@@ -27,6 +29,7 @@ export default function TaskColumn({
   canEdit,
   projectId,
   isLast,
+  projectMutate,
 }: TaskColumnProps) {
   const { isOver, setNodeRef } = useDroppable({ id: status });
 
@@ -53,6 +56,7 @@ export default function TaskColumn({
               canEdit={canEdit}
               projectId={projectId}
               isLast={isLast}
+              projectMutate={projectMutate}
             />
           ))
         )}
