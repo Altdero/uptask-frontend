@@ -11,7 +11,7 @@ import type {
   userRegistrationSchema,
   userSchema,
 } from "@/src/lib/schemas/authSchema";
-import type { noteSchema } from "@/src/lib/schemas/noteSchema";
+import type { noteFormSchema, noteSchema } from "@/src/lib/schemas/noteSchema";
 import type {
   dashboardProjectSchema,
   editProjectSchema,
@@ -53,7 +53,7 @@ export type TaskProjectType = z.infer<typeof taskProjectSchema>;
 
 /** Notes */
 export type NoteType = z.infer<typeof noteSchema>;
-export type NoteFormDataType = Pick<NoteType, "content">;
+export type NoteFormDataType = z.infer<typeof noteFormSchema>;
 
 /** Projects */
 export type ProjectType = z.infer<typeof projectSchema>;

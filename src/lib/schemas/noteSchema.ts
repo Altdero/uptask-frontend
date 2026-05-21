@@ -8,3 +8,7 @@ export const noteSchema = z.object({
   task: z.string(),
   createdAt: z.string(),
 });
+
+export const noteFormSchema = z.object({
+  content: z.string().min(1, "Note content is required"),
+});

@@ -22,15 +22,17 @@ export const taskSchema = z.object({
       status: taskStatusSchema,
     })
   ),
-  notes: z.array(
-    z.object({
-      _id: z.string(),
-      content: z.string(),
-      createdBy: userSchema,
-      task: z.string(),
-      createdAt: z.string(),
-    })
-  ),
+  notes: z
+    .array(
+      z.object({
+        _id: z.string(),
+        content: z.string(),
+        createdBy: userSchema,
+        task: z.string(),
+        createdAt: z.string(),
+      })
+    )
+    .default([]),
   createdAt: z.string(),
   updatedAt: z.string(),
 });

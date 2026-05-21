@@ -1,5 +1,6 @@
 "use client";
 
+import NotesPanel from "@/components/app/notes/NotesPanel";
 import Loader from "@/components/ui/icons/Loader";
 import { updateStatus } from "@/src/api/TaskAPI";
 import { TASK_STATUSES } from "@/src/constants/taskStatus";
@@ -11,6 +12,7 @@ import type { TaskStatusType } from "@/src/types";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import type { ChangeEvent } from "react";
 import { useSWRConfig } from "swr";
 
 type TaskModalDetailsProps = {
@@ -32,9 +34,7 @@ export default function TaskDetailsModal({ projectId }: TaskModalDetailsProps) {
 
   const handleClose = () => router.replace(pathname);
 
-  const handleStatusChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleStatusChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     const status = e.target.value as TaskStatusType;
     const loader = toast.loading("Please wait...", { toasterId: "loader" });
     try {
@@ -43,16 +43,16 @@ export default function TaskDetailsModal({ projectId }: TaskModalDetailsProps) {
         taskId: taskId!,
         status,
       });
+      toast.dismiss(loader);
       toast.success(message, { toasterId: "notifications" });
-      taskMutate();
-      mutate([`/projects/${projectId}`, projectSchema]);
+      await taskMutate();
+      await mutate([`/projects/${projectId}`, projectSchema]);
     } catch (error) {
+      toast.dismiss(loader);
       toast.error(
         error instanceof Error ? error.message : "Something went wrong",
         { toasterId: "notifications" }
       );
-    } finally {
-      toast.dismiss(loader);
     }
   };
 
@@ -89,7 +89,7 @@ export default function TaskDetailsModal({ projectId }: TaskModalDetailsProps) {
                     <ul className="mt-3 list-decimal pl-5">
                       {data.completedBy.map((log) => (
                         <li key={log._id}>
-                          <span className="font-bold text-zinc-700">
+                          <span className="font-semibold text-zinc-700">
                             {TASK_STATUSES[log.status]}
                           </span>
                           {" by "}
@@ -111,7 +111,7 @@ export default function TaskDetailsModal({ projectId }: TaskModalDetailsProps) {
                     key={data.status}
                     id="currentStatus"
                     defaultValue={data.status}
-                    className="w-full border border-gray-300 p-3 placeholder-zinc-400"
+                    className="w-full border border-zinc-300 p-3 placeholder-zinc-400"
                     onChange={handleStatusChange}
                   >
                     {Object.entries(TASK_STATUSES).map(([key, value]) => (
@@ -120,6 +120,14 @@ export default function TaskDetailsModal({ projectId }: TaskModalDetailsProps) {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <div className="mt-10">
+                  <NotesPanel
+                    notes={data.notes}
+                    projectId={projectId}
+                    taskId={taskId!}
+                  />
                 </div>
               </>
             ) : (
