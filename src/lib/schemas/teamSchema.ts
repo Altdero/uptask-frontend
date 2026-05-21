@@ -7,3 +7,7 @@ export const teamMemberSchema = z.object({
 });
 
 export const teamMembersSchema = z.array(teamMemberSchema);
+
+export const teamMemberFormSchema = z.object({
+  email: z.email("Invalid email address"),
+});

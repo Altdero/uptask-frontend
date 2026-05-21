@@ -23,6 +23,7 @@ import type {
   taskStatusSchema,
 } from "@/src/lib/schemas/taskSchema";
 import type {
+  teamMemberFormSchema,
   teamMemberSchema,
   teamMembersSchema,
 } from "@/src/lib/schemas/teamSchema";
@@ -69,4 +70,4 @@ export type EditProjectType = z.infer<typeof editProjectSchema>;
 /** Team */
 export type TeamMemberType = z.infer<typeof teamMemberSchema>;
 export type TeamMembersType = z.infer<typeof teamMembersSchema>;
-export type TeamMemberFormType = Pick<TeamMemberType, "email">;
+export type TeamMemberFormType = z.infer<typeof teamMemberFormSchema>;
