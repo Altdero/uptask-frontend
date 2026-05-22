@@ -2,15 +2,14 @@
 
 import AddTaskModal from "@/components/app/tasks/AddTaskModal";
 import EditTaskData from "@/components/app/tasks/EditTaskData";
-import TaskList from "@/components/app/tasks/TaskList";
 import TaskDetailsModal from "@/components/app/tasks/TaskDetailsModal";
+import TaskList from "@/components/app/tasks/TaskList";
 import Loader from "@/components/ui/icons/Loader";
+import useCanEdit from "@/src/hooks/useCanEdit";
 import useGetData from "@/src/hooks/useGetData";
-import { userSchema } from "@/src/lib/schemas/authSchema";
 import { projectSchema } from "@/src/lib/schemas/projectSchema";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useMemo } from "react";
 
 type ProjectDetailsProps = {
   projectId: string;
@@ -29,18 +28,10 @@ export default function ProjectDetails({ projectId }: ProjectDetailsProps) {
     schema: projectSchema,
   });
 
-  const { data: user, isLoading: loadingUser } = useGetData({
-    url: "/auth/user",
-    schema: userSchema,
-  });
+  const canEdit = useCanEdit(projectId);
 
-  const canEdit = useMemo(
-    () => data?.manager === user?._id,
-    [data?.manager, user?._id]
-  );
-
-  if (loadingProject || loadingUser) return <Loader />;
-  if (!data || !user) return null;
+  if (loadingProject) return <Loader />;
+  if (!data) return null;
 
   return (
     <>
@@ -49,15 +40,15 @@ export default function ProjectDetails({ projectId }: ProjectDetailsProps) {
         {data.description}
       </p>
 
-      {canEdit && (
-        <nav className="my-5 flex items-center justify-between gap-3">
-          <Link
-            href="/"
-            className="font-semibold text-purple-400 transition hover:underline"
-          >
-            Back to Projects
-          </Link>
-          <div className="flex gap-3">
+      <nav className="my-5 flex items-center justify-between gap-3">
+        <Link
+          href="/"
+          className="font-semibold text-purple-400 transition hover:underline"
+        >
+          Back to Projects
+        </Link>
+        <div className="flex gap-3">
+          {canEdit && (
             <button
               type="button"
               className="cursor-pointer rounded-xl border-2 border-purple-500 bg-purple-50 px-3 py-1 font-semibold text-purple-500 uppercase transition hover:bg-purple-500 hover:text-white disabled:opacity-50 md:px-6 md:py-2 md:text-lg"
@@ -65,16 +56,16 @@ export default function ProjectDetails({ projectId }: ProjectDetailsProps) {
             >
               Add Task
             </button>
+          )}
 
-            <Link
-              href={`/projects/${projectId}/team`}
-              className="cursor-pointer rounded-xl border-2 border-fuchsia-500 bg-fuchsia-50 px-3 py-1 font-semibold text-fuchsia-500 uppercase transition hover:bg-fuchsia-500 hover:text-white disabled:opacity-50 md:px-6 md:py-2 md:text-lg"
-            >
-              Team
-            </Link>
-          </div>
-        </nav>
-      )}
+          <Link
+            href={`/projects/${projectId}/team`}
+            className="cursor-pointer rounded-xl border-2 border-fuchsia-500 bg-fuchsia-50 px-3 py-1 font-semibold text-fuchsia-500 uppercase transition hover:bg-fuchsia-500 hover:text-white disabled:opacity-50 md:px-6 md:py-2 md:text-lg"
+          >
+            Team
+          </Link>
+        </div>
+      </nav>
 
       <TaskList
         tasks={data.tasks}

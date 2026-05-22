@@ -3,6 +3,7 @@
 import AddMemberModal from "@/components/app/team/AddMemberModal";
 import Loader from "@/components/ui/icons/Loader";
 import { removeUserFromProject } from "@/src/api/TeamAPI";
+import useCanEdit from "@/src/hooks/useCanEdit";
 import useGetData from "@/src/hooks/useGetData";
 import { teamMembersSchema } from "@/src/lib/schemas/teamSchema";
 import type { ProjectType } from "@/src/types";
@@ -27,6 +28,8 @@ export default function TeamView({ projectId }: TeamViewProps) {
     url: `/projects/${projectId}/team`,
     schema: teamMembersSchema,
   });
+
+  const canEdit = useCanEdit(projectId);
 
   const handleRemove = async (userId: string) => {
     const loader = toast.loading("Please wait...", { toasterId: "loader" });
@@ -56,13 +59,15 @@ export default function TeamView({ projectId }: TeamViewProps) {
         >
           Back to Project
         </Link>
-        <button
-          type="button"
-          className="cursor-pointer rounded-xl border-2 border-purple-500 bg-purple-50 px-3 py-1 font-semibold text-purple-500 uppercase transition hover:bg-purple-500 hover:text-white disabled:opacity-50 md:px-6 md:py-2 md:text-lg"
-          onClick={() => router.push(`${pathname}?addMember=true`)}
-        >
-          Add Member
-        </button>
+        {canEdit && (
+          <button
+            type="button"
+            className="cursor-pointer rounded-xl border-2 border-purple-500 bg-purple-50 px-3 py-1 font-semibold text-purple-500 uppercase transition hover:bg-purple-500 hover:text-white disabled:opacity-50 md:px-6 md:py-2 md:text-lg"
+            onClick={() => router.push(`${pathname}?addMember=true`)}
+          >
+            Add Member
+          </button>
+        )}
       </nav>
 
       <h2 className="mb-6 text-3xl font-black">Current Members</h2>
@@ -81,10 +86,12 @@ export default function TeamView({ projectId }: TeamViewProps) {
                 <p className="text-sm text-zinc-400">{member.email}</p>
               </div>
 
-              <TrashIcon
-                className="size-6 cursor-pointer text-red-500"
-                onClick={() => handleRemove(member._id)}
-              />
+              {canEdit && (
+                <TrashIcon
+                  className="size-6 cursor-pointer text-red-500"
+                  onClick={() => handleRemove(member._id)}
+                />
+              )}
             </li>
           ))}
         </ul>
