@@ -17,6 +17,7 @@ export default function ConfirmAccountForm() {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ConfirmAccountType>({
     resolver: zodResolver(confirmAccountSchema),
     defaultValues: { token: "" },
@@ -33,6 +34,7 @@ export default function ConfirmAccountForm() {
     try {
       const message = await confirmAccount(formData);
       toast.success(message, { toasterId: "notifications" });
+      reset();
       router.push("/auth/login");
     } catch (error) {
       toast.error(

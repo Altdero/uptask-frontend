@@ -23,6 +23,7 @@ export default function SignUpForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<UserRegistrationType>({
     resolver: zodResolver(userRegistrationSchema),
   });
@@ -40,6 +41,7 @@ export default function SignUpForm() {
     try {
       const message = await createAccount(formData);
       toast.success(message, { toasterId: "notifications" });
+      reset();
       router.push("/auth/confirm-account");
     } catch (error) {
       toast.error(

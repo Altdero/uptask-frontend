@@ -24,6 +24,7 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<UserLoginType>({ resolver: zodResolver(userLoginSchema) });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -36,6 +37,7 @@ export default function LoginForm() {
     });
     try {
       await authenticateUser(formData);
+      reset();
       router.push(redirect ?? "/");
     } catch (error) {
       toast.error(

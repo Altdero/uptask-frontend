@@ -17,6 +17,7 @@ export default function ForgotPasswordType() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ForgotPasswordType>({
     resolver: zodResolver(forgotPasswordSchema),
   });
@@ -32,7 +33,8 @@ export default function ForgotPasswordType() {
     try {
       const message = await forgotPassword(formData);
       toast.success(message, { toasterId: "notifications" });
-      router.push("/auth/login");
+      reset();
+      router.push("/auth/new-password");
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Something went wrong",

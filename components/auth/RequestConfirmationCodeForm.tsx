@@ -17,6 +17,7 @@ export default function RequestConfirmationCodeForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<RequestConfirmationCodeType>({
     resolver: zodResolver(requestConfirmationCodeSchema),
   });
@@ -32,6 +33,7 @@ export default function RequestConfirmationCodeForm() {
     try {
       const message = await requestConfirmationCode(formData);
       toast.success(message, { toasterId: "notifications" });
+      reset();
       router.push("/auth/confirm-account");
     } catch (error) {
       toast.error(
