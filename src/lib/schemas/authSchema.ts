@@ -48,6 +48,10 @@ export const updateCurrentUserPasswordSchema = authSchema
   .refine((data) => data.password === data.password_confirmation, {
     message: "Passwords don't match",
     path: ["password_confirmation"],
+  })
+  .refine((data) => data.password !== data.current_password, {
+    message: "New password must be different from your current password",
+    path: ["password"],
   });
 
 export const confirmAccountSchema = z.object({
@@ -58,4 +62,7 @@ export const checkPasswordSchema = z.object({
   password: z.string().min(8, "Your password is required"),
 });
 
-export const userProfileSchema = userSchema.pick({ name: true, email: true });
+export const userProfileSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.email("Invalid email address"),
+});
