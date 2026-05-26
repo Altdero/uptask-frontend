@@ -83,6 +83,7 @@ app/
 │   │       ├── edit/page.tsx
 │   │       └── team/page.tsx
 │   └── profile/
+│       ├── layout.tsx            # Tab layout
 │       ├── page.tsx
 │       └── password/page.tsx
 └── auth/
@@ -92,26 +93,27 @@ app/
     ├── confirm-account/page.tsx
     ├── request-code/page.tsx
     ├── forgot-password/page.tsx
-    └── reset-password/page.tsx
+    └── new-password/page.tsx
 
 components/
-├── ui/                           # Shared UI components
-├── auth/
-├── projects/
-├── tasks/
-├── notes/
-├── team/
-└── profile/
+├── ui/                           # Shared UI (Navbar, NavMenu, ErrorMessage, icons)
+├── app/                          # Feature components for protected routes
+│   ├── notes/
+│   ├── profile/
+│   ├── projects/
+│   ├── tasks/
+│   └── team/
+└── auth/                         # Auth form components
 
 src/
 ├── api/                          # Fetch-based API functions per domain
 ├── constants/                    # App-wide constants
-├── hooks/                        # Custom React hooks
+├── hooks/                        # useAuth, useGetData, useCanEdit
 ├── lib/
 │   ├── schemas/                  # Zod schemas
-│   └── utils/                    # Fetch utilities and helpers
-├── providers/                    # React context providers
-├── stores/                       # MobX stores
+│   └── utils/                    # fetcher, apiFetch, errors, formatDate
+├── providers/                    # SWR and auth providers
+├── stores/                       # MobX AuthStore
 └── types/                        # Inferred TypeScript types
 ```
 

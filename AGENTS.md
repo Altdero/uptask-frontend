@@ -57,19 +57,54 @@ app/
     ├── confirm-account/page.tsx
     ├── request-code/page.tsx
     ├── forgot-password/page.tsx
-    └── reset-password/page.tsx
+    └── new-password/page.tsx
 
 components/
 ├── ui/
 │   ├── icons/
+│   │   └── Loader.tsx
 │   ├── Navbar.tsx
+│   ├── NavMenu.tsx
 │   └── ErrorMessage.tsx
-├── auth/
-├── projects/
-├── tasks/
-├── notes/
-├── team/
-└── profile/
+├── app/
+│   ├── Dashboard.tsx
+│   ├── notes/
+│   │   ├── AddNoteForm.tsx
+│   │   ├── NoteDetail.tsx
+│   │   └── NotesPanel.tsx
+│   ├── profile/
+│   │   ├── ProfileForm.tsx
+│   │   ├── ProfileTabs.tsx
+│   │   └── UpdateCurrentUserPasswordForm.tsx
+│   ├── projects/
+│   │   ├── CreateProjectForm.tsx
+│   │   ├── DeleteProjectModal.tsx
+│   │   ├── EditProjectForm.tsx
+│   │   ├── ProjectDetails.tsx
+│   │   └── ProjectForm.tsx
+│   ├── tasks/
+│   │   ├── AddTaskModal.tsx
+│   │   ├── EditTaskData.tsx
+│   │   ├── EditTaskModal.tsx
+│   │   ├── TaskCard.tsx
+│   │   ├── TaskColumn.tsx
+│   │   ├── TaskDetailsModal.tsx
+│   │   ├── TaskForm.tsx
+│   │   └── TaskList.tsx
+│   └── team/
+│       ├── AddMemberForm.tsx
+│       ├── AddMemberModal.tsx
+│       ├── SearchResult.tsx
+│       └── TeamView.tsx
+└── auth/
+    ├── ConfirmAccountForm.tsx
+    ├── ForgotPasswordForm.tsx
+    ├── LoginForm.tsx
+    ├── NewPasswordForm.tsx
+    ├── NewPasswordTokenForm.tsx
+    ├── NewPasswordView.tsx
+    ├── RequestConfirmationCodeForm.tsx
+    └── SignUpForm.tsx
 
 src/
 ├── api/
@@ -82,7 +117,9 @@ src/
 ├── constants/
 │   └── taskStatus.ts
 ├── hooks/
-│   └── useAuth.ts
+│   ├── useAuth.ts
+│   ├── useGetData.ts             # SWR data fetching with Zod validation
+│   └── useCanEdit.ts             # Returns true if authenticated user is project manager
 ├── lib/
 │   ├── schemas/
 │   │   ├── authSchema.ts
@@ -93,6 +130,8 @@ src/
 │   └── utils/
 │       ├── fetcher.ts            # SWR GET fetcher
 │       ├── apiFetch.ts           # Mutation helper (POST/PUT/DELETE)
+│       ├── errors.ts             # Custom error classes (UnauthorizedError)
+│       ├── formatDate.ts         # Date formatting helpers
 │       └── validateAPIData.ts
 ├── providers/
 │   ├── swr.provider.tsx
