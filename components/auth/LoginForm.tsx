@@ -23,6 +23,7 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
     reset,
   } = useForm<UserLoginType>({ resolver: zodResolver(userLoginSchema) });
@@ -119,6 +120,19 @@ export default function LoginForm() {
           className="mt-4 w-full cursor-pointer rounded-xl bg-fuchsia-500 p-3 text-xl font-black text-white uppercase transition hover:bg-fuchsia-600 disabled:opacity-50"
         >
           Sign In
+        </button>
+
+        <button
+          type="button"
+          disabled={isLoading}
+          onClick={() => {
+            setValue("email", process.env.NEXT_PUBLIC_DEMO_EMAIL!);
+            setValue("password", process.env.NEXT_PUBLIC_DEMO_PASSWORD!);
+            handleSubmit(handleLogin)();
+          }}
+          className="w-full cursor-pointer rounded-xl border border-fuchsia-500 p-3 text-xl font-black text-fuchsia-500 uppercase transition hover:bg-fuchsia-50 disabled:opacity-50"
+        >
+          Login as Demo
         </button>
       </form>
 
