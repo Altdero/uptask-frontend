@@ -258,6 +258,8 @@ Define schemas in `src/lib/schemas/`, infer types with `z.infer<>`, re-export fr
 
 ```
 API_URL=http://localhost:4000/api
+NEXT_PUBLIC_DEMO_EMAIL=demo@uptask.com
+NEXT_PUBLIC_DEMO_PASSWORD=demo12345678
 ```
 
 ## Development Workflow

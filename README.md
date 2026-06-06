@@ -56,9 +56,11 @@ Copy `.env.example` to `.env.local` and fill in the values:
 cp .env.example .env.local
 ```
 
-| Variable  | Description     | Example                     |
-| --------- | --------------- | --------------------------- |
-| `API_URL` | Backend API URL | `http://localhost:4000/api` |
+| Variable                    | Description           | Example                     |
+| --------------------------- | --------------------- | --------------------------- |
+| `API_URL`                   | Backend API URL       | `http://localhost:4000/api` |
+| `NEXT_PUBLIC_DEMO_EMAIL`    | Demo account email    | `demo@uptask.com`           |
+| `NEXT_PUBLIC_DEMO_PASSWORD` | Demo account password | `demo12345678`              |
 
 ### Run
 
